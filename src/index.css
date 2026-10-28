@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html, body {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Alvos de toque confortáveis em tablets Android */
+  button, a, input, select, textarea {
+    @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-600 focus-visible:ring-offset-1;
+  }
+}
+
+/* Estilos para impressão térmica 58mm / 80mm */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #thermal-print-area,
+  #thermal-print-area * {
+    visibility: visible;
+  }
+  #thermal-print-area {
+    position: absolute;
+    left: 0;
+    top: 0;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    background: #fff !important;
+    color: #000 !important;
+  }
+  @page {
+    margin: 0;
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "name": "SH LojaCell — Gestão de Assistência Técnica",
+  "short_name": "SH LojaCell",
+  "description": "Sistema rápido de Ordens de Serviço, Estoque, PDV e Financeiro para Assistência Técnica de Celulares em Tablet Android e PC.",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0f172a",
+  "theme_color": "#0284c7",
+  "lang": "pt-BR",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
