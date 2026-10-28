@@ -3,6 +3,9 @@ import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
 const SUPABASE_CONFIG_STORAGE_KEY = 'shlojacell_supabase_config_v1';
 
+const DEFAULT_SUPABASE_URL = 'https://szqzxqkriibqjxdtcqyr.supabase.co';
+const DEFAULT_SUPABASE_ANON_KEY = 'sb_publishable_bKoZ7bOkl91UTFTu4lCXNQ_JruiwxRE';
+
 export interface SupabaseConnectionConfig {
   url: string;
   anonKey: string;
@@ -12,6 +15,10 @@ let cachedClient: SupabaseClient | null = null;
 let cachedConfigHash = '';
 
 export function obterConfigSupabase(): SupabaseConnectionConfig | null {
+  if (import.meta.env.MODE === 'test') {
+    return null;
+  }
+
   const envUrl = (import.meta.env.VITE_SUPABASE_URL as string | undefined)?.trim();
   const envKey = (import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined)?.trim();
 
@@ -21,19 +28,23 @@ export function obterConfigSupabase(): SupabaseConnectionConfig | null {
 
   try {
     const raw = localStorage.getItem(SUPABASE_CONFIG_STORAGE_KEY);
-    if (!raw) return null;
-    const parsed = JSON.parse(raw) as SupabaseConnectionConfig;
-    if (parsed.url?.trim().startsWith('http') && parsed.anonKey?.trim()) {
-      return {
-        url: parsed.url.trim(),
-        anonKey: parsed.anonKey.trim(),
-      };
+    if (raw) {
+      const parsed = JSON.parse(raw) as SupabaseConnectionConfig;
+      if (parsed.url?.trim().startsWith('http') && parsed.anonKey?.trim()) {
+        return {
+          url: parsed.url.trim(),
+          anonKey: parsed.anonKey.trim(),
+        };
+      }
     }
   } catch {
-    return null;
+    // Ignora erro de leitura do localStorage e usa o padrão
   }
 
-  return null;
+  return {
+    url: DEFAULT_SUPABASE_URL,
+    anonKey: DEFAULT_SUPABASE_ANON_KEY,
+  };
 }
 
 export function salvarConfigSupabaseLocal(config: SupabaseConnectionConfig | null): void {
